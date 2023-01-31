@@ -3,32 +3,55 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 import casillaVacia from './casilla-vacia.png';
+import fichaRoja from './ficha-roja.png';
+import fichaAmarilla from './ficha-amarilla.png';
 
 /*
 Función para crear una sola casilla.
-Utiliza la imagen de casilla vacia, las otras imagenes aun no se usan.
-Cuando se hace click sobre la casilla se manda un console.log() con el numero que le corresponde a la casilla.
+Dependiendo de a que sea igual value se pinta una imagen u otra.
 */
 function Casilla(props) {
   return (
     <button
       className = "casilla"
-      onClick={() => console.log(props.value)}
+      onClick={props.onClick}
     >
-      <img src = {casillaVacia}
-      className = "casilla-vacia"
-      style = {{width:"12vmin", height:"12vmin"}}
-      />
+      {props.value === null && <img src = {casillaVacia} style = {{width:"12vmin", height:"12vmin"}} />}
+      {props.value === 'R' && <img src = {fichaRoja} style = {{width:"12vmin", height:"12vmin"}} />}
+      {props.value === 'A' && <img src = {fichaAmarilla} style = {{width:"12vmin", height:"12vmin"}} />}
     </button>
   );
 }
 
 /*
 Clase para crear el tablero a partir de multiples casillas.
+Siempre se comienza por las fichas rojas, con cada click se alterna entre fichas.
 */
 class Tablero extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      casillas: Array(42).fill(null),
+      rIsNext: true,
+    };
+  }
+
+  handleClick(i) {
+    const casillas = this.state.casillas.slice();
+    casillas[i] = this.state.rIsNext ? 'R' : 'A';
+    this.setState({
+      casillas: casillas,
+      rIsNext: !this.state.rIsNext,
+    });
+  }
+
   renderCasilla(i) {
-    return <Casilla value={i} />;
+    return (
+      <Casilla
+        value = {this.state.casillas[i]}
+        onClick = {() => this.handleClick(i)}
+      />
+    );
   }
 
   render() {
