@@ -1,4 +1,4 @@
-package com.bosonit.backend.jugador.domain.entity;
+package com.bosonit.backend.domain.entities;
 
 import lombok.*;
 import javax.persistence.*;
@@ -9,10 +9,10 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Jugador {
+public class Player {
     @Id
     @GeneratedValue
-    private int idJugador;
+    private int idPlayer;
     private String name;
     private String password;
 

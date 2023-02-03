@@ -1,4 +1,4 @@
-package com.bosonit.backend.dtos;
+package com.bosonit.backend.controllers.player.dtos;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class JugadorInput {
+public class PlayerInput {
     private String name;
     private String password;
 }
