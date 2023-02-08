@@ -3,7 +3,7 @@ package com.bosonit.backend.application.services.player;
 import com.bosonit.backend.Mappers.PlayerMapper;
 import com.bosonit.backend.controllers.player.dtos.PlayerInput;
 import com.bosonit.backend.controllers.player.dtos.PlayerOutput;
-import com.bosonit.backend.domain.entities.Player;
+import com.bosonit.backend.domain.entities.Player.Player;
 import com.bosonit.backend.repository.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,32 +1,56 @@
 package com.bosonit.backend.application.services.game;
 
+import com.bosonit.backend.Mappers.GameMapper;
+import com.bosonit.backend.controllers.game.dtos.GameInput;
+import com.bosonit.backend.controllers.game.dtos.GameOutput;
+import com.bosonit.backend.domain.entities.Game.Game;
+import com.bosonit.backend.repository.GameRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.StreamSupport;
 
 @Service
 @ToString
-public class GameServiceImpl {
+@AllArgsConstructor
+@NoArgsConstructor
+public class GameServiceImpl implements GameService{
+    GameRepository gameRepository;
 
-    public int [][] matriz = {{0,0,0},
-            {0,0,0},
-            {0,0,0}
-    };
+    private static final Logger log = LoggerFactory.getLogger(GameServiceImpl.class);
 
-    public void tiroJugadorUno(int x,int y){
-
-        matriz[x][y] = 1;
+    @Override
+    public GameOutput getGame(int idGame) {
+        Game Game = gameRepository.findById(idGame).orElseThrow();
+        GameOutput GameOutput = GameMapper.gMapper.gameToGameOutput(Game);
+        log.info("Game obtenido: "+ GameOutput);
+        return GameOutput;
     }
 
-    public void tiroJugadorDos(int x,int y){
+    @Override
+    public Iterable<GameOutput> getAllGames(int pageNumber, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
 
-        matriz[x][y] = 2;
+        Iterable <Game> Gamees = gameRepository.findAll(pageRequest).getContent();
+        Iterable<GameOutput> GameesOutput = StreamSupport.stream(Gamees.spliterator(),false)
+                .map(Game -> GameMapper.gMapper.gameToGameOutput(Game)).toList();
+
+        log.info("Gamees: "+GameesOutput);
+        return GameesOutput;
     }
 
-    public boolean revisarTablero(int [][] matriz){
-        if(matriz[0][0]==1 && matriz[0][1]==1 && matriz[0][2]==1){
-            return true;
-        }else{
-            return false;
-        }
+
+    @Override
+    public void deleteGameById(int idGame) {
+        Game game = gameRepository.findById(idGame).orElseThrow();
+        gameRepository.deleteById(idGame);
+
+        log.info("Game eliminado: "+ game);
     }
 }

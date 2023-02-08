@@ -10,43 +10,43 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/jugador")
+@RequestMapping("/player")
 public class PlayerController {
     @Autowired
     PlayerService playerService;
 
     @PostMapping
-    public ResponseEntity<PlayerOutput> addCliente(@RequestBody PlayerInput playerInput) throws Exception{
+    public ResponseEntity<PlayerOutput> addPlayer(@RequestBody PlayerInput playerInput) throws Exception{
         PlayerOutput playerOutput = playerService.addJugador(playerInput);
         return ResponseEntity.status(HttpStatus.CREATED).body(playerOutput);
     }
 
-    @GetMapping("/jugadores")
-    public ResponseEntity<Iterable<PlayerOutput>>getAllJugadores(@RequestParam(defaultValue = "0", required = false) int pageNumber,
+    @GetMapping("/players")
+    public ResponseEntity<Iterable<PlayerOutput>>getAllPlayers(@RequestParam(defaultValue = "0", required = false) int pageNumber,
                                                                  @RequestParam(defaultValue = "4", required = false) int pageSize) {
         Iterable<PlayerOutput>  jugadoresOutput = playerService.getAllJugadores(pageNumber,pageSize);
         return ResponseEntity.status(HttpStatus.OK).body(jugadoresOutput);
     }
 
-    @GetMapping("/id/{idJugador}")
-    public ResponseEntity<PlayerOutput> getJugadorById(@PathVariable int idJugador)
+    @GetMapping("/id/{idPlayer}")
+    public ResponseEntity<PlayerOutput> getPlayerById(@PathVariable int idPlayer)
     {
-        PlayerOutput playerOutput = playerService.getJugador(idJugador);
+        PlayerOutput playerOutput = playerService.getJugador(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).body(playerOutput);
     }
 
 
-    @PutMapping("/update/{idJugador}")
-    public ResponseEntity<PlayerOutput> updateJugador(@RequestBody PlayerInput playerInput,
-                                                      @PathVariable int idJugador) {
-        PlayerOutput playerOutput = playerService.updateJugador(idJugador, playerInput);
+    @PutMapping("/update/{idPlayer}")
+    public ResponseEntity<PlayerOutput> updtatePlayer(@RequestBody PlayerInput playerInput,
+                                                      @PathVariable int idPlayer) {
+        PlayerOutput playerOutput = playerService.updateJugador(idPlayer, playerInput);
         return ResponseEntity.status(HttpStatus.OK).body(playerOutput);
     }
 
-    @DeleteMapping("delete/{idJugador}")
-    public ResponseEntity<PlayerOutput> deleteJugador(@PathVariable int idJugador) {
-        PlayerOutput playerOutput = playerService.getJugador(idJugador);
-        playerService.deleteJugadorById(idJugador);
+    @DeleteMapping("delete/{idPlayer}")
+    public ResponseEntity<PlayerOutput> deletePlayer(@PathVariable int idPlayer) {
+        PlayerOutput playerOutput = playerService.getJugador(idPlayer);
+        playerService.deleteJugadorById(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).body(playerOutput);
     }
 
