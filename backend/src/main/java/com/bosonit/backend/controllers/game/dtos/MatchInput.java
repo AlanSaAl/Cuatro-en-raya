@@ -7,6 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class GameInput {
+public class MatchInput {
     int idGame;
+    int idPlayerOne;
+    int idPlayerTwo;
+    int idWinner;
 }

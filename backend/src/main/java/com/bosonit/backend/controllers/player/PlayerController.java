@@ -15,23 +15,17 @@ public class PlayerController {
     @Autowired
     PlayerService playerService;
 
-    @PostMapping
-    public ResponseEntity<PlayerOutput> addPlayer(@RequestBody PlayerInput playerInput) throws Exception{
-        PlayerOutput playerOutput = playerService.addJugador(playerInput);
-        return ResponseEntity.status(HttpStatus.CREATED).body(playerOutput);
-    }
-
     @GetMapping("/players")
     public ResponseEntity<Iterable<PlayerOutput>>getAllPlayers(@RequestParam(defaultValue = "0", required = false) int pageNumber,
                                                                  @RequestParam(defaultValue = "4", required = false) int pageSize) {
-        Iterable<PlayerOutput>  jugadoresOutput = playerService.getAllJugadores(pageNumber,pageSize);
+        Iterable<PlayerOutput>  jugadoresOutput = playerService.getAllPlayers(pageNumber,pageSize);
         return ResponseEntity.status(HttpStatus.OK).body(jugadoresOutput);
     }
 
     @GetMapping("/id/{idPlayer}")
     public ResponseEntity<PlayerOutput> getPlayerById(@PathVariable int idPlayer)
     {
-        PlayerOutput playerOutput = playerService.getJugador(idPlayer);
+        PlayerOutput playerOutput = playerService.getPlayer(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).body(playerOutput);
     }
 
@@ -39,14 +33,14 @@ public class PlayerController {
     @PutMapping("/update/{idPlayer}")
     public ResponseEntity<PlayerOutput> updtatePlayer(@RequestBody PlayerInput playerInput,
                                                       @PathVariable int idPlayer) {
-        PlayerOutput playerOutput = playerService.updateJugador(idPlayer, playerInput);
+        PlayerOutput playerOutput = playerService.updatePlayer(idPlayer, playerInput);
         return ResponseEntity.status(HttpStatus.OK).body(playerOutput);
     }
 
     @DeleteMapping("delete/{idPlayer}")
     public ResponseEntity<PlayerOutput> deletePlayer(@PathVariable int idPlayer) {
-        PlayerOutput playerOutput = playerService.getJugador(idPlayer);
-        playerService.deleteJugadorById(idPlayer);
+        PlayerOutput playerOutput = playerService.getPlayer(idPlayer);
+        playerService.deletePlayerById(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).body(playerOutput);
     }
 

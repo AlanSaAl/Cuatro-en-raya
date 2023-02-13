@@ -21,12 +21,7 @@ public class Game {
     @Column(name = "id_game")
     public int idGame;
 
-    //Una partida puede tener varios tiros
-    @OneToMany(mappedBy = "game",cascade = CascadeType.ALL)
-    public List<Shot> shotsList = new ArrayList<>();
-
-    //Muchas partidas pueden tener un jugador (ganador)
-    @ManyToOne
-    @JoinColumn(name = "id_player")
-    public Player player;
+    @OneToOne
+    @JoinColumn(name="id_match")
+    Match match;
 }

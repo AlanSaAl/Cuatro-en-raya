@@ -17,28 +17,42 @@ import java.util.stream.StreamSupport;
 public class PlayerServiceImp implements PlayerService {
     @Autowired
     PlayerRepository playerRepository;
+    @Autowired
+    Player playerOne;
+    @Autowired
+    Player playerTwo;
 
     private static final Logger log = LoggerFactory.getLogger(PlayerServiceImp.class);
 
 
     @Override
-    public PlayerOutput addJugador(PlayerInput playerInput) {
-        Player player = PlayerMapper.jMapper.jugadorInputToJugador(playerInput);
-        PlayerOutput playerOutput = PlayerMapper.jMapper.jugadorToJugadorOutput(playerRepository.save(player));
+    public PlayerOutput addPlayer(PlayerInput playerInput) {
+        playerOne = PlayerMapper.jMapper.jugadorInputToJugador(playerInput);
+        PlayerOutput playerOutput = PlayerMapper.jMapper.jugadorToJugadorOutput(playerRepository.save(playerOne));
         log.info("Player creado: "+ playerOutput);
         return playerOutput;
     }
-
     @Override
-    public PlayerOutput getJugador(int idJugador) {
+    public PlayerOutput getPlayerByCredentias(PlayerInput playerInput){
+        playerTwo = playerRepository.findByUser(playerInput.getUser()).orElseThrow();
+        if(playerTwo.getPassword().equals(playerInput.getPassword())){
+            return PlayerMapper.jMapper.jugadorToJugadorOutput(playerTwo);
+        }
+        return null;
+    }
+
+    //--------------------------------------------------------------------------------------
+    @Override
+    public PlayerOutput getPlayer(int idJugador) {
         Player player = playerRepository.findById(idJugador).orElseThrow();
         PlayerOutput playerOutput = PlayerMapper.jMapper.jugadorToJugadorOutput(player);
         log.info("Player obtenido: "+ playerOutput);
         return playerOutput;
     }
 
+
     @Override
-    public Iterable<PlayerOutput> getAllJugadores(int pageNumber, int pageSize) {
+    public Iterable<PlayerOutput> getAllPlayers(int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
 
         Iterable <Player> jugadores = playerRepository.findAll(pageRequest).getContent();
@@ -50,9 +64,9 @@ public class PlayerServiceImp implements PlayerService {
     }
 
     @Override
-    public PlayerOutput updateJugador(int idJugador, PlayerInput playerInput) {
+    public PlayerOutput updatePlayer(int idJugador, PlayerInput playerInput) {
         Player player = playerRepository.findById(idJugador).orElseThrow();
-        player.setName(playerInput.getName());
+        player.setUser(playerInput.getUser());
         player.setPassword(playerInput.getPassword());
         PlayerOutput playerOutput = PlayerMapper.jMapper.jugadorToJugadorOutput(playerRepository.save(player));
 
@@ -61,7 +75,7 @@ public class PlayerServiceImp implements PlayerService {
     }
 
     @Override
-    public void deleteJugadorById(int idJugador) {
+    public void deletePlayerById(int idJugador) {
         Player player = playerRepository.findById(idJugador).orElseThrow();
         playerRepository.deleteById(idJugador);
 

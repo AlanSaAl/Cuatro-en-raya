@@ -11,8 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class PlayerOutput {
-    private int idPlayer;
-    private String name;
-    private String password;
-    private List<Game> wonGames;
+    int idPlayer;
+    String user;
 }
