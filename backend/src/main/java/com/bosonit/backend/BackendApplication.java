@@ -43,8 +43,7 @@ public class BackendApplication implements CommandLineRunner {
 		}
 
 		for(int i =0; i<defaultPlayers.size();i++){
-			defaultPlayers.get(i).setName("Player no: "+i);
-			defaultPlayers.get(i).setNumPlayer(i+1);
+			defaultPlayers.get(i).setUser("Player no: "+i);
 			playerRepository.save(defaultPlayers.get(i));
 		}
 	}

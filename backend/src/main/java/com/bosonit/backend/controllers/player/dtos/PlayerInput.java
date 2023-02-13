@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class PlayerInput {
-    private String name;
+    private String user;
     private String password;
 }
