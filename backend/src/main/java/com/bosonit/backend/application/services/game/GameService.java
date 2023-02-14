@@ -1,12 +1,11 @@
 package com.bosonit.backend.application.services.game;
 
-
-import com.bosonit.backend.controllers.game.dtos.GameInput;
 import com.bosonit.backend.controllers.game.dtos.GameOutput;
+import com.bosonit.backend.controllers.player.dtos.PlayerInput;
 
 public interface GameService {
-    GameOutput getGame(int idGame);
+    GameOutput getGame(String idGame);
     Iterable<GameOutput> getAllGames(int pageNumber, int pageSize);
-    void deleteGameById(int idGame);
-    
+    void deleteGameById(String idGame);
+    GameOutput crearJuego(PlayerInput playerInput);
 }

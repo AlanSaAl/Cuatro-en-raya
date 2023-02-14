@@ -1,0 +1,65 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+}
+
+ol, ul {
+  padding-left: 30px;
+}
+
+.tablero-fila:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 10vmin;
+  font-size: calc(10px + 2vmin);
+}
+
+.casilla {
+  border: 0px;
+  float: left;
+  padding: 0;
+  height: 10vmin;
+  width: 10vmin;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-info {
+  margin-left: 20px;
+}
+
+.button1 {
+  font-size: 15px;
+}
+
+/* Start */
+.start {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.start_header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start_input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start_buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}

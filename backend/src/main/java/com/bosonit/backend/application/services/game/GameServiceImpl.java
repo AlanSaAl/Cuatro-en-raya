@@ -1,9 +1,11 @@
 package com.bosonit.backend.application.services.game;
 
 import com.bosonit.backend.Mappers.GameMapper;
-import com.bosonit.backend.controllers.game.dtos.GameInput;
+import com.bosonit.backend.Mappers.PlayerMapper;
 import com.bosonit.backend.controllers.game.dtos.GameOutput;
+import com.bosonit.backend.controllers.player.dtos.PlayerInput;
 import com.bosonit.backend.domain.entities.Game.Game;
+import com.bosonit.backend.domain.entities.Player.Player;
 import com.bosonit.backend.repository.GameRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -21,12 +23,14 @@ import java.util.stream.StreamSupport;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameServiceImpl implements GameService{
-    GameRepository gameRepository;
+
+    @Autowired
+    private GameRepository gameRepository;
 
     private static final Logger log = LoggerFactory.getLogger(GameServiceImpl.class);
 
     @Override
-    public GameOutput getGame(int idGame) {
+    public GameOutput getGame(String idGame) {
         Game Game = gameRepository.findById(idGame).orElseThrow();
         GameOutput GameOutput = GameMapper.gMapper.gameToGameOutput(Game);
         log.info("Game obtenido: "+ GameOutput);
@@ -47,10 +51,19 @@ public class GameServiceImpl implements GameService{
 
 
     @Override
-    public void deleteGameById(int idGame) {
+    public void deleteGameById(String idGame) {
         Game game = gameRepository.findById(idGame).orElseThrow();
         gameRepository.deleteById(idGame);
 
         log.info("Game eliminado: "+ game);
+    }
+
+    // Corregir
+    @Override
+    public GameOutput crearJuego(PlayerInput playerInput) {
+        Game game = new Game();
+        Player player = PlayerMapper.jMapper.jugadorInputToJugador(playerInput);
+        gameRepository.save(game);
+        return GameMapper.gMapper.gameToGameOutput(game);
     }
 }

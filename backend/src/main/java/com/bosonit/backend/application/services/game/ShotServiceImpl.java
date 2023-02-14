@@ -1,22 +1,13 @@
 package com.bosonit.backend.application.services.game;
 
-import com.bosonit.backend.controllers.game.dtos.ShotOutput;
-import com.bosonit.backend.controllers.player.dtos.PlayerInput;
-import com.bosonit.backend.domain.entities.Game.Game;
-import com.bosonit.backend.domain.entities.Game.Shot;
-import com.bosonit.backend.domain.entities.Player.Player;
 import com.bosonit.backend.repository.GameRepository;
 import com.bosonit.backend.repository.PlayerRepository;
 import com.bosonit.backend.repository.ShotRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class ShotServiceImpl implements ShotService{
@@ -38,7 +29,7 @@ public class ShotServiceImpl implements ShotService{
                                     {7,8,9}
     };
 
-    public void playerShot(Integer x, Integer y, Integer idGame,Integer idPlayer,Integer numPlayer){
+    /*public void playerShot(Integer x, Integer y, Integer idGame,Integer idPlayer,Integer numPlayer){
         Integer [][] mSV = this.matrixShotValue;
         Integer [][] mIdS = this.matrixIdShot;
         Boolean checkShot = (mSV[x][y]==0);
@@ -76,7 +67,7 @@ public class ShotServiceImpl implements ShotService{
             System.out.println("\n============>El jugador número: "+numPlayer+" ha ganado\n");
         }
 
-    }
+    }*/
 
 
     public boolean checkGame(Integer [][] gameMatrix,Integer pValueShot){

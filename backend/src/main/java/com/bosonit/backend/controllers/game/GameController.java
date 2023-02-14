@@ -1,18 +1,25 @@
 package com.bosonit.backend.controllers.game;
 
+import com.bosonit.backend.application.services.game.GameService;
 import com.bosonit.backend.application.services.game.GameServiceImpl;
-import com.bosonit.backend.domain.entities.Game.Game;
+import com.bosonit.backend.controllers.game.dtos.GameOutput;
+import com.bosonit.backend.controllers.player.dtos.PlayerInput;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/juego")
 public class GameController {
 
     private GameServiceImpl juegoService;
+
+    @Autowired
+    private GameService gameService;
 /*
     @PostMapping("/jugador1")
     public ResponseEntity<?> addTiro1(@RequestBody Game game) throws Exception{
@@ -33,4 +40,10 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.OK).body(juegoService.revisarTablero(this.juegoService.matriz));
     } */
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/crear")
+    public ResponseEntity<GameOutput> crearJuego(@RequestBody PlayerInput playerInput) {
+        log.info("solicitud para crear juego: {}", playerInput);
+        return ResponseEntity.ok(gameService.crearJuego(playerInput));
+    }
 }
