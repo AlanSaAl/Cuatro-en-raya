@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import Game from "./Game";
-import Start from "./components/start";
+import Start from "./components/start/start";
 import { GameContext } from "./context/GameContext";
 
 function App() {
