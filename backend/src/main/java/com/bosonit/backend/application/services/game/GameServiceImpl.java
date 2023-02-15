@@ -1,11 +1,9 @@
 package com.bosonit.backend.application.services.game;
 
 import com.bosonit.backend.Mappers.GameMapper;
-import com.bosonit.backend.Mappers.PlayerMapper;
 import com.bosonit.backend.controllers.game.dtos.GameOutput;
 import com.bosonit.backend.controllers.player.dtos.PlayerInput;
 import com.bosonit.backend.domain.entities.Game.Game;
-import com.bosonit.backend.domain.entities.Player.Player;
 import com.bosonit.backend.repository.GameRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -43,7 +41,7 @@ public class GameServiceImpl implements GameService{
 
         Iterable <Game> Gamees = gameRepository.findAll(pageRequest).getContent();
         Iterable<GameOutput> GameesOutput = StreamSupport.stream(Gamees.spliterator(),false)
-                .map(Game -> GameMapper.gMapper.gameToGameOutput(Game)).toList();
+                .map(GameMapper.gMapper::gameToGameOutput).toList();
 
         log.info("Gamees: "+GameesOutput);
         return GameesOutput;
@@ -62,7 +60,6 @@ public class GameServiceImpl implements GameService{
     @Override
     public GameOutput crearJuego(PlayerInput playerInput) {
         Game game = new Game();
-        Player player = PlayerMapper.jMapper.jugadorInputToJugador(playerInput);
         gameRepository.save(game);
         return GameMapper.gMapper.gameToGameOutput(game);
     }
