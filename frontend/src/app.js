@@ -1,17 +1,19 @@
-import { useContext } from "react";
-import Game from "./Game";
-import Start from "./components/start/start";
-import { GameContext } from "./context/GameContext";
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
+import Game from './components/Game'
+import Start from './view/Start'
 
 function App() {
-    const { screen } = useContext(GameContext); 
-
     return(
-        <div className="App">
-            <div className="container">
-                {screen === "start" ? <Start /> : <Game />}
-            </div>
-        </div>
+        <BrowserRouter>
+                <Routes>
+                    <Route path = "/">
+                        <Route index element = {<Start />}/>
+                    </Route>
+                    <Route path = "/game">
+                        <Route index element = {<Game />}/>
+                    </Route>
+                </Routes>
+        </BrowserRouter>
     );
 }
 

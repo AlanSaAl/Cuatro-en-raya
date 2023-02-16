@@ -1,15 +1,15 @@
-import { useContext } from "react";
-import { GameContext } from "../../context/GameContext";
+import React from 'react'
+import { useNavigate } from "react-router-dom"
 
 const Start = () => {
-    const { handleStart } = useContext(GameContext);
-
-    return (
-        <div className = "start">
-            <div className = "start_header">
+    const navigate = useNavigate()
+    
+    return(
+        <div className = "form-register-container">
+            <div className = "form-register_title">
                 <h1>Iniciar sesión</h1>
             </div>
-            <div className = "start_input">
+            <div className = "form-register_input">
                 <form>
                     <label htmlFor = "user">Usuario</label>
                     <input id="user"></input><br></br>
@@ -17,12 +17,12 @@ const Start = () => {
                     <input id = "password"></input>
                 </form>
             </div>
-            <div className = "start_buttons">
+            <div className = "form-register_buttons">
                 <button class = "button1" name = "registrarseBtn">Registrarse</button>
-                <button class = "button1" name = "entrarBtn" onClick={() => handleStart("cpu")}>Entrar</button>
+                <button class = "button1" name = "entrarBtn" onClick = { () => navigate("/game") }>Entrar</button>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default Start;

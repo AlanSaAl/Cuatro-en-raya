@@ -1,10 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import './style.css';
-
-import casillaVacia from './assets/casilla-vacia.png';
-import fichaRoja from './assets/ficha-roja.png';
-import fichaAmarilla from './assets/ficha-amarilla.png';
+import '../style.css';
+import casillaVacia from '../assets/casilla-vacia.png';
+import fichaRoja from '../assets/ficha-roja.png';
+import fichaAmarilla from '../assets/ficha-amarilla.png';
 
 /**
  * Función para crear una sola casilla.
