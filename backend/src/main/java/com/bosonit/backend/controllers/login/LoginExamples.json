@@ -1,0 +1,57 @@
+{
+	"info": {
+		"_postman_id": "8f56cd05-593a-4aee-810a-93e2a7e8ca19",
+		"name": "4EnRaya",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24612743"
+	},
+	"item": [
+		{
+			"name": "RegistrarJugador",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Alan\",\r\n    \"password\":\"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/jugador",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"jugador"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ObtenerJugador",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/jugador/id/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"jugador",
+						"id",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
