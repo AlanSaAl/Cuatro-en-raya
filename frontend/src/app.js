@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import Game from './components/Game'
 import Start from './view/Start'
+import Options from './view/Options';
 
 function App() {
     return(
@@ -11,6 +12,9 @@ function App() {
                     </Route>
                     <Route path = "/game">
                         <Route index element = {<Game />}/>
+                    </Route>
+                    <Route path = "/options">
+                        <Route index element = {<Options />}/>
                     </Route>
                 </Routes>
         </BrowserRouter>

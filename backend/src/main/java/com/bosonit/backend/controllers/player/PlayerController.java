@@ -1,6 +1,5 @@
 package com.bosonit.backend.controllers.player;
 
-
 import com.bosonit.backend.application.services.player.PlayerService;
 import com.bosonit.backend.controllers.player.dtos.PlayerInput;
 import com.bosonit.backend.controllers.player.dtos.PlayerOutput;

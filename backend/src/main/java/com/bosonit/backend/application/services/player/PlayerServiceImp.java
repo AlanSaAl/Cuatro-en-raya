@@ -8,7 +8,6 @@ import com.bosonit.backend.exceptions.EntityNotFoundException;
 import com.bosonit.backend.repository.PlayerRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ import java.util.stream.StreamSupport;
 @AllArgsConstructor
 @Slf4j
 public class PlayerServiceImp implements PlayerService {
-    @Autowired
+
     private PlayerRepository playerRepository;
 
     //Registrar jugador, ¿devuvelve al jugador o devuelve true?
@@ -26,9 +25,8 @@ public class PlayerServiceImp implements PlayerService {
     public PlayerOutput signUpPlayer(PlayerInput playerInput) {
         //Verificar si el jugador existe en la base de datos
         Player player = PlayerMapper.jMapper.jugadorInputToJugador(playerInput);
-        String user = player.getUserName();
-        if(playerRepository.findByUserName(user).isPresent()) {
-            throw new EntityNotFoundException("La persona con usuario " +user + " ya existe, registre otro usuario");
+        if(playerRepository.findByUserName(player.getUserName()).isPresent()) {
+            throw new EntityNotFoundException("La persona con usuario " + player.getUserName() + " ya existe, registre otro usuario");
         }else{
             PlayerOutput playerOutput = PlayerMapper.jMapper.jugadorToJugadorOutput(playerRepository.save(player));
             log.info("Player creado: "+ playerOutput);
