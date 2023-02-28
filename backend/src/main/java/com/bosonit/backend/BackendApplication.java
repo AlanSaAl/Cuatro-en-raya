@@ -32,5 +32,10 @@ public class BackendApplication implements CommandLineRunner {
 			player.setUserPassword(faker.internet().password());
 			playerRepository.save(player);
 		}
+		Player playerStatic = Player.builder()
+				.userName("user")
+				.userPassword("1234")
+				.build();
+		playerRepository.save(playerStatic);
 	}
 }

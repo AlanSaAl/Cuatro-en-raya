@@ -1,7 +1,10 @@
 package com.bosonit.backend.domain.entities.Player;
 
+import com.bosonit.backend.domain.entities.Game.Game;
 import lombok.*;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="player")
@@ -10,15 +13,19 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_player")
-    public int idPlayer;
+    private int idPlayer;
 
     @Column(name = "user_name")
-    public String userName;
+    private String userName;
 
     @Column(name = "user_password")
-    public String userPassword;
+    private String userPassword;
+
+    @ManyToMany
+    private List<Game> games = new ArrayList<>();
 }

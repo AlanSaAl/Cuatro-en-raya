@@ -1,7 +1,9 @@
 package com.bosonit.backend.controllers.game.dtos;
 
-import com.bosonit.backend.domain.entities.Game.Match;
+import com.bosonit.backend.controllers.player.dtos.PlayerOutput;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -9,6 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class GameOutput {
-    int idGame;
-    Match match;
+    private int idGame;
+
+    //private List<PlayerOutput> playersOutput;
+
+    private int idWinner;
 }

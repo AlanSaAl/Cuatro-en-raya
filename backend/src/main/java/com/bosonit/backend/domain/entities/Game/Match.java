@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name="game")
+@Table(name="match")
 @Getter
 @Setter
 @AllArgsConstructor

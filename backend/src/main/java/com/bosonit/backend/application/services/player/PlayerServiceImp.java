@@ -24,11 +24,11 @@ public class PlayerServiceImp implements PlayerService {
     @Override
     public PlayerOutput signUpPlayer(PlayerInput playerInput) {
         //Verificar si el jugador existe en la base de datos
-        Player player = PlayerMapper.jMapper.jugadorInputToJugador(playerInput);
+        Player player = PlayerMapper.pMapper.playerInputToPlayer(playerInput);
         if(playerRepository.findByUserName(player.getUserName()).isPresent()) {
             throw new EntityNotFoundException("La persona con usuario " + player.getUserName() + " ya existe, registre otro usuario");
         }else{
-            PlayerOutput playerOutput = PlayerMapper.jMapper.jugadorToJugadorOutput(playerRepository.save(player));
+            PlayerOutput playerOutput = PlayerMapper.pMapper.playerToPlayerOutput(playerRepository.save(player));
             log.info("Player creado: "+ playerOutput);
             return playerOutput;
         }
@@ -41,7 +41,7 @@ public class PlayerServiceImp implements PlayerService {
         if(playerRepository.findByUserName(userName).isPresent()) {
             Player player = playerRepository.findByUserName(userName).get();
             if(playerInput.getUserPassword().equals(player.getUserPassword())){
-                PlayerOutput playerOutput = PlayerMapper.jMapper.jugadorToJugadorOutput(player);
+                PlayerOutput playerOutput = PlayerMapper.pMapper.playerToPlayerOutput(player);
                 log.info("Jugador entidad"+ player);
                 log.info("Jugador encontrado"+ playerOutput);
                 return playerOutput;
@@ -59,7 +59,7 @@ public class PlayerServiceImp implements PlayerService {
     //--------------------------------------------------------------------------------------
     public PlayerOutput getPlayer(int idJugador) {
         Player player = playerRepository.findById(idJugador).orElseThrow();
-        PlayerOutput playerOutput = PlayerMapper.jMapper.jugadorToJugadorOutput(player);
+        PlayerOutput playerOutput = PlayerMapper.pMapper.playerToPlayerOutput(player);
         log.info("Player obtenido: "+ playerOutput);
         return playerOutput;
     }
@@ -70,7 +70,7 @@ public class PlayerServiceImp implements PlayerService {
 
         Iterable <Player> jugadores = playerRepository.findAll(pageRequest).getContent();
         Iterable<PlayerOutput> jugadoresOutput = StreamSupport.stream(jugadores.spliterator(),false)
-                .map(player -> PlayerMapper.jMapper.jugadorToJugadorOutput(player)).toList();
+                .map(player -> PlayerMapper.pMapper.playerToPlayerOutput(player)).toList();
 
         log.info("Jugadores: "+jugadoresOutput);
         return jugadoresOutput;
@@ -81,7 +81,7 @@ public class PlayerServiceImp implements PlayerService {
         Player player = playerRepository.findById(idJugador).orElseThrow();
         player.setUserName(playerInput.getUserName());
         player.setUserPassword(playerInput.getUserPassword());
-        PlayerOutput playerOutput = PlayerMapper.jMapper.jugadorToJugadorOutput(playerRepository.save(player));
+        PlayerOutput playerOutput = PlayerMapper.pMapper.playerToPlayerOutput(playerRepository.save(player));
 
         log.info("Player actualizado a: "+ playerOutput);
         return playerOutput;

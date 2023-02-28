@@ -1,15 +1,21 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from 'react-router-dom'
+import { Button } from 'antd'
+import { createGame } from '../request/gameRequest'
 
-const Options = () => {
+export const Options = () => {
     const navigate = useNavigate()
-    
+
+    const handleSubmit = async () => {
+        var idPlayer = localStorage.getItem("idPlayer")
+        var idGame = await createGame(idPlayer)
+        navigate(`/game/${idGame}`)
+    }
+
     return(
-        <div className = "options-buttons">
-            <button name = "create-game-btn" onClick = { () => navigate("/game") }>Crear juego</button>
-            <button>Unirse a un juego</button>
-            <button>Historial de partidas</button>
+        <div className = 'options-buttons'>
+            <Button className = 'optionBtn' onClick = { () => handleSubmit()}>Crear juego</Button>
+            <Button className = 'optionBtn'>Unirse a un juego</Button>
+            <Button className = 'optionBtn'>Historial de partidas</Button>
         </div>
     )
 }
-
-export default Options

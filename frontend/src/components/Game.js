@@ -1,9 +1,8 @@
-import React from 'react';
-import axios from 'axios';
-import '../style.css';
-import casillaVacia from '../assets/casilla-vacia.png';
-import fichaRoja from '../assets/ficha-roja.png';
-import fichaAmarilla from '../assets/ficha-amarilla.png';
+import React from 'react'
+import '../style.css'
+import casillaVacia from '../assets/casilla-vacia.png'
+import fichaRoja from '../assets/ficha-roja.png'
+import fichaAmarilla from '../assets/ficha-amarilla.png'
 
 /**
  * Función para crear una sola casilla.
@@ -124,24 +123,6 @@ class Tablero extends React.Component {
 }
 
 /**
- * Manda los datos iniciales al backend para guardarlos en BD.
- */
-function create_game() {
-    let nombre = document.getElementById("nombre").value;
-    if (nombre == null || nombre === '') {
-        alert("Por favor escribe un nombre de jugador");
-    } else {
-        axios.post("http://localhost:8080/juego/crear", {
-          name: nombre,
-          password: '1234'
-        })
-        .catch(function(error) {
-          console.log(error);
-        })
-    }
-}
-
-/**
  * Clase que despliega el tablero.
  */
 class Game extends React.Component {
@@ -154,10 +135,6 @@ class Game extends React.Component {
         <div className = "game-info">
           <div>{/* status */}</div>
           <ol>{/* todo */}</ol>
-        </div>
-        <div className = "nombre-jugador">
-          <input id="nombre" placeholder="Nombre del jugador"></input>
-          <button name="crearJuegoNuevoBtn" onClick = {() => create_game()}>Crear juego nuevo</button>
         </div>
       </div>
     );

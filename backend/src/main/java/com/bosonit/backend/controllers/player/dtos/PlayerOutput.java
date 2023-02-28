@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class PlayerOutput {
-    int idPlayer;
-    String userName;
+    private int idPlayer;
+
+    private String userName;
 }

@@ -5,10 +5,11 @@ import com.bosonit.backend.controllers.player.dtos.PlayerOutput;
 import com.bosonit.backend.domain.entities.Player.Player;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
 @Mapper()
 public interface PlayerMapper {
-    PlayerMapper jMapper = Mappers.getMapper(PlayerMapper.class);
+    PlayerMapper pMapper = Mappers.getMapper(PlayerMapper.class);
 
-    Player jugadorInputToJugador(PlayerInput playerInput);
-    PlayerOutput jugadorToJugadorOutput(Player player);
+    Player playerInputToPlayer(PlayerInput playerInput);
+    PlayerOutput playerToPlayerOutput(Player player);
 }
