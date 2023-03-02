@@ -12,9 +12,11 @@ import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -68,5 +70,20 @@ public class GameServiceImpl implements GameService{
         playerOne.setGames(List.of(game));
 
         return GameMapper.gMapper.gameToGameOutput(gameRepository.save(game));
+    }
+
+    @Override
+    public Pair<Player, Optional<Integer>> joinGame(int idPlayer, int idGame) throws Exception{
+        Game game = gameRepository.findById(idGame).orElseThrow();
+        Player playerToJoin = playerRepository.findById(idPlayer).orElseThrow();
+
+        game.setPlayerToGame(playerToJoin);
+        gameRepository.save(game);
+        playerRepository.save(playerToJoin);
+
+        Player firstPlayer = game.getPlayers().get(0);
+        Optional<Integer> firstPlayerId = Optional.ofNullable(firstPlayer).map(Player::getIdPlayer);
+
+        return Pair.of(playerToJoin, firstPlayerId);
     }
 }

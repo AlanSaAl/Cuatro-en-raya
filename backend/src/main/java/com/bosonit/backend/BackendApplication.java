@@ -37,5 +37,11 @@ public class BackendApplication implements CommandLineRunner {
 				.userPassword("1234")
 				.build();
 		playerRepository.save(playerStatic);
+
+		Player playerStaticTwo = Player.builder()
+				.userName("user2")
+				.userPassword("1234")
+				.build();
+		playerRepository.save(playerStaticTwo);
 	}
 }

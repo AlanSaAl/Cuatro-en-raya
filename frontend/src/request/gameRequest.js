@@ -9,11 +9,11 @@ export const createGame = (idPlayer) => {
     return response.then((res) => res.data.idGame)
 }
 
-export const joinGame = (idGame) => {
+export const joinGame = (idPlayer, idGame) => {
     const response = axios({
-        url: ``,
+        url: '/juego/join',
         method: "PATCH",
-        data: { idGame }
+        data: { idPlayer, idGame }
     })
     return response.then((res) => res.data)
 }

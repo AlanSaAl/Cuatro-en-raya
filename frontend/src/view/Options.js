@@ -14,7 +14,7 @@ export const Options = () => {
     return(
         <div className = 'options-buttons'>
             <Button className = 'optionBtn' onClick = { () => handleSubmit()}>Crear juego</Button>
-            <Button className = 'optionBtn'>Unirse a un juego</Button>
+            <Button className = 'optionBtn' onClick = { () => navigate("/joingame") }>Unirse a un juego</Button>
             <Button className = 'optionBtn'>Historial de partidas</Button>
         </div>
     )

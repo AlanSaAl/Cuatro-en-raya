@@ -8,7 +8,7 @@ export const JoinGame = () => {
     const navigate = useNavigate()
 
     const handleJoinGame = (values) => {
-        joinGame(values.idGame)
+        joinGame(localStorage.getItem('idPlayer'), values.idGame)
             .then(() => navigate(`/game/${values.idGame}`))
             .catch((error) => console.log(error))
     }
@@ -16,8 +16,8 @@ export const JoinGame = () => {
     return(
         <div className = "join-game">
             <h1>Join Game</h1>
-            <Form className = "form-join-game">
-                <Form.Item>
+            <Form className = "form-join-game" onFinish = { handleJoinGame }>
+                <Form.Item name = "idGame">
                     <Input placeholder = "Escribe el id del juego" />
                 </Form.Item>
                 <Form.Item>
