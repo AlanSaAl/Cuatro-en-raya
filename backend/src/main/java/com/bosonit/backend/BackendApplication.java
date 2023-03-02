@@ -1,7 +1,9 @@
 package com.bosonit.backend;
 
 
+import com.bosonit.backend.domain.entities.Game.Game;
 import com.bosonit.backend.domain.entities.Player.Player;
+import com.bosonit.backend.repository.GameRepository;
 import com.bosonit.backend.repository.PlayerRepository;
 import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,8 @@ public class BackendApplication implements CommandLineRunner {
 	Faker faker;
 	@Autowired
 	PlayerRepository playerRepository;
+	@Autowired
+	GameRepository gameRepository;
 
 
 	public static void main(String[] args) {
@@ -30,6 +34,10 @@ public class BackendApplication implements CommandLineRunner {
 			Player player = new Player();
 			player.setUserName(faker.name().username());
 			player.setUserPassword(faker.internet().password());
+			Game newGame = new Game();
+			newGame.addPlayer(player);
+			player.addGame(newGame);
+			gameRepository.save(newGame);
 			playerRepository.save(player);
 		}
 	}
