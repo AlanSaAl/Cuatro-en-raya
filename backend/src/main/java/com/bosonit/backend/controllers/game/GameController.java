@@ -88,34 +88,4 @@ public class GameController {
             this.name = firstPlayer.getUserName();
         }
     }
-
-/*
-    @PostMapping("/jugador1")
-    public ResponseEntity<?> addTiro1(@RequestBody Game game) throws Exception{
-       juegoService.tiroJugadorUno(game.getX(), game.getY());
-        System.out.println(juegoService.matriz);
-        return ResponseEntity.status(HttpStatus.OK).body("Tiro registrado");
-    }
-
-    @PostMapping("/jugador2")
-    public ResponseEntity<?> addTiro2(@RequestBody Game game) throws Exception{
-        juegoService.tiroJugadorDos(game.getX(), game.getY());
-        System.out.println(juegoService.matriz);
-        return ResponseEntity.status(HttpStatus.OK).body("Tiro registrado");
-    }
-
-    @GetMapping("/ganador")
-    public ResponseEntity<?> revisarGanador(@RequestBody Game game) throws Exception{
-        return ResponseEntity.status(HttpStatus.OK).body(juegoService.revisarTablero(this.juegoService.matriz));
-    } */
-
-    /*
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/crear")
-    public ResponseEntity<GameOutput> crearJuego(@RequestBody PlayerInput playerInput) {
-        log.info("solicitud para crear juego: {}", playerInput);
-        return ResponseEntity.ok(gameService.crearJuego(playerInput));
-    }
-
-     */
 }
