@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +31,7 @@ public class GameServiceImpl implements GameService {
     private PlayerRepository playerRepository;
     int MAX_PLAYERS = 2;
 
+
     @Override
     public GameOutput addGame(int player1Id) {
         //Get the player by id
@@ -45,6 +45,8 @@ public class GameServiceImpl implements GameService {
         playerRepository.save(playerOne);
         return GameMapper.gMapper.gameToGameOutput(newGame);
     }
+
+    @Override
     public GameOutput getGame(int idGame) {
         Game Game = gameRepository.findById(idGame).orElseThrow();
         GameOutput GameOutput = GameMapper.gMapper.gameToGameOutput(Game);
@@ -52,67 +54,40 @@ public class GameServiceImpl implements GameService {
         return GameOutput;
     }
 
-    public Pair<Player, Optional<Integer>> joinGame(int idGame, String playerName) throws Exception {
-        log.info("Joining game {} with playerToJoin {}", idGame, playerName);
-        Game game = gameRepository.findById(idGame).orElseThrow();
-        List<Player> players =game.getPlayers();
-
-        Player playerToJoin = playerRepository.findByUserName(playerName).orElseThrow();
-
-        joinPlayer(idGame,playerToJoin);
-        gameRepository.save(game);
-        playerRepository.save(playerToJoin);
-
-        Player startingPlayer = (players.size() == MAX_PLAYERS) ? players.get(0) : null;
-        Optional<Integer> startingPlayerId = Optional.ofNullable(startingPlayer).map(Player::getIdPlayer);
-        return Pair.of(playerToJoin, startingPlayerId);
-    }
-
-    public void setWinner(Game game, Player winner) {
-        game.setWinner(!winner.equals(new Player()) ? winner : null);
-        game.setFinished(true);
-        gameRepository.save(game);
-    }
-
-    public void joinPlayer(int idGame ,Player player) throws Exception {
-
-        Game currentGame = gameRepository.findById(idGame).orElseThrow();
-        List<Player> players =currentGame.getPlayers();
-        if (players.size() == MAX_PLAYERS) {
-            throw new Exception("Max players reached");
-        }
-        if (players.contains(player)) {
-            throw new Exception("The player is already in the game");
-        }
-        players.add(player);
-        List<Game> playersGames = player.getGames();
-        playersGames.add(currentGame);
-        player.setGames(playersGames);
-    }
-
     public Player checkWinner(int idGame) {
+        //Buscamos el juego por su id
         Game currentGame = gameRepository.findById(idGame).orElseThrow();
+        //Obtenemos los tiros de ese juego
         List<Shot> currentGameShots = currentGame.getShots();
 
+        //Si no el tamaño es 42 quiere decir que no hay ganador
         if (currentGameShots.size() == 42) {
             return new Player();
         }
 
+        //Creamos una matriz de 6x7, cada posición de la matriz contiene a un jugador, después un algoritmo
+        //revisa las combinaciones usando a los jugadores
         Player[][] board = new Player[6][7];
+
+        //Para cada movimiento de la lista currentGameShots, obten las coordenadas del tiro (renglón y columna), después en esa posición
+        //agrega al jugador que realizó el movimiento
         for (Shot shot : currentGameShots) {
             board[shot.getRenglon()][shot.getCol()] = shot.getPlayer();
         }
 
+
+        //Se revisan las combinaciones, si coincide el mismo jugador 4 veces seguidas
+        //Se regresa el tablero en la posición[i][j], es decir, el jugador que ganó el juego o null en caso de que no haya ganador
+
         // Verificar filas
-        // i = fila = 5
-        // j = columna = 0
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 4; j++) {
-                if (board[i][j] != null &&
+                if (    board[i][j] != null &&
                         board[i][j] == board[i][j + 1] &&
                         board[i][j] == board[i][j + 2] &&
-                        board[i][j] == board[i][j + 3]) {
-                    return board[i][j] ;
+                        board[i][j] == board[i][j + 3])
+                {
+                    return board[i][j];
                 }
             }
         }
@@ -155,23 +130,49 @@ public class GameServiceImpl implements GameService {
         return null;
     }
 
-    @Override
-    public GameOutput getGame(String idGame) {
-        return null;
+    public Pair<Player, Optional<Integer>> joinGame(int idGame, String playerName) throws Exception {
+        log.info("Joining game {} with playerToJoin {}", idGame, playerName);
+        Game game = gameRepository.findById(idGame).orElseThrow();
+        List<Player> players =game.getPlayers();
+
+        Player playerToJoin = playerRepository.findByUserName(playerName).orElseThrow();
+
+        joinPlayer(idGame,playerToJoin);
+        gameRepository.save(game);
+        playerRepository.save(playerToJoin);
+
+        Player startingPlayer = (players.size() == MAX_PLAYERS) ? players.get(0) : null;
+        Optional<Integer> startingPlayerId = Optional.ofNullable(startingPlayer).map(Player::getIdPlayer);
+        return Pair.of(playerToJoin, startingPlayerId);
     }
 
+    public void setWinner(Game game, Player winner) {
+        game.setWinner(!winner.equals(new Player()) ? winner : null);
+        game.setFinished(true);
+        gameRepository.save(game);
+    }
+    public void joinPlayer(int idGame ,Player player) throws Exception {
 
+        Game currentGame = gameRepository.findById(idGame).orElseThrow();
+        List<Player> players =currentGame.getPlayers();
+        if (players.size() == MAX_PLAYERS) {
+            throw new Exception("Max players reached");
+        }
+        if (players.contains(player)) {
+            throw new Exception("The player is already in the game");
+        }
+        players.add(player);
+        List<Game> playersGames = player.getGames();
+        playersGames.add(currentGame);
+        player.setGames(playersGames);
+    }
 
     @Override
     public Iterable<GameOutput> getAllGames(int pageNumber, int pageSize) {
         return null;
     }
-
     @Override
-    public void deleteGameById(String idGame) {
-
-    }
-
+    public void deleteGameById(String idGame) {}
     @Override
     public GameOutput crearJuego(PlayerInput playerInput) {
         return null;

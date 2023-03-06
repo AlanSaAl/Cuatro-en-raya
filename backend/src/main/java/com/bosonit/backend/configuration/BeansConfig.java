@@ -5,9 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class FakerBeanConfig {
+public class BeansConfig {
     @Bean
     public Faker getFaker() {
         return new Faker();
     }
+    @Bean
+    public InitialData getInitialData() {return new InitialData();}
 }

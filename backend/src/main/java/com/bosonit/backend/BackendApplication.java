@@ -1,6 +1,7 @@
 package com.bosonit.backend;
 
 
+import com.bosonit.backend.configuration.InitialData;
 import com.bosonit.backend.domain.entities.Game.Game;
 import com.bosonit.backend.domain.entities.Player.Player;
 import com.bosonit.backend.repository.GameRepository;
@@ -17,12 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @AllArgsConstructor
 public class BackendApplication implements CommandLineRunner {
 	@Autowired
-	Faker faker;
-	@Autowired
-	PlayerRepository playerRepository;
-	@Autowired
-	GameRepository gameRepository;
-
+	InitialData initialData;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
@@ -30,15 +26,6 @@ public class BackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args){
-		for(int i = 0; i < 10; i++) {
-			Player player = new Player();
-			player.setUserName(faker.name().username());
-			player.setUserPassword(faker.internet().password());
-			Game newGame = new Game();
-			newGame.addPlayer(player);
-			player.addGame(newGame);
-			gameRepository.save(newGame);
-			playerRepository.save(player);
-		}
+		initialData.createInitialData();
 	}
 }
