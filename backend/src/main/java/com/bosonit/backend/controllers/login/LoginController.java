@@ -11,21 +11,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api")
 @AllArgsConstructor
 public class LoginController {
     @Autowired
     private PlayerService playerService;
 
     @Operation(summary = "Cuando se presiona el botón de registrar jugador")
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<PlayerOutput> signUpPlayer(@RequestBody PlayerInput playerInput) throws Exception{
         return ResponseEntity.status(HttpStatus.CREATED).body(playerService.signUpPlayer(playerInput));
     }
 
 
     @Operation(summary = "Cuando se presiona el botón de iniciar sesión")
-    @GetMapping()
+    @PostMapping("/login")
     public ResponseEntity<PlayerOutput> logInPlayer(@RequestBody PlayerInput playerInput) {
         return ResponseEntity.status(HttpStatus.CREATED).body(playerService.logInPlayer(playerInput));
     }

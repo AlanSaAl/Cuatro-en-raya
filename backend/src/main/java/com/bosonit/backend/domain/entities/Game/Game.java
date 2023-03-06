@@ -50,4 +50,18 @@ public class Game implements Serializable {
     }
 
     private static final long serialVersionUID = 1L;
+
+    public void setPlayerToGame(Player player) throws Exception{
+        if (players.size() == 2) {
+            throw new Exception("Partida llena");
+        }
+        if (players.contains(player)) {
+            throw new Exception("El jugador ya se encuentra en la partida");
+        }
+
+        this.players.add(player);
+        List<Game> games = player.getGames();
+        games.add(this);
+        player.setGames(games);
+    }
 }

@@ -9,10 +9,7 @@ import com.bosonit.backend.domain.entities.Player.Player;
 import com.bosonit.backend.repository.GameRepository;
 import com.bosonit.backend.repository.PlayerRepository;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
 @Slf4j
+@AllArgsConstructor
 public class GameServiceImpl implements GameService {
-    @Autowired
-    private GameRepository gameRepository;
-    @Autowired
-    private PlayerRepository playerRepository;
-    int MAX_PLAYERS = 2;
 
+    private GameRepository gameRepository;
+
+    private PlayerRepository playerRepository;
 
     @Override
     public GameOutput addGame(int player1Id) {
@@ -130,41 +123,25 @@ public class GameServiceImpl implements GameService {
         return null;
     }
 
-    public Pair<Player, Optional<Integer>> joinGame(int idGame, String playerName) throws Exception {
-        log.info("Joining game {} with playerToJoin {}", idGame, playerName);
-        Game game = gameRepository.findById(idGame).orElseThrow();
-        List<Player> players =game.getPlayers();
-
-        Player playerToJoin = playerRepository.findByUserName(playerName).orElseThrow();
-
-        joinPlayer(idGame,playerToJoin);
-        gameRepository.save(game);
-        playerRepository.save(playerToJoin);
-
-        Player startingPlayer = (players.size() == MAX_PLAYERS) ? players.get(0) : null;
-        Optional<Integer> startingPlayerId = Optional.ofNullable(startingPlayer).map(Player::getIdPlayer);
-        return Pair.of(playerToJoin, startingPlayerId);
-    }
-
     public void setWinner(Game game, Player winner) {
         game.setWinner(!winner.equals(new Player()) ? winner : null);
         game.setFinished(true);
         gameRepository.save(game);
     }
-    public void joinPlayer(int idGame ,Player player) throws Exception {
 
-        Game currentGame = gameRepository.findById(idGame).orElseThrow();
-        List<Player> players =currentGame.getPlayers();
-        if (players.size() == MAX_PLAYERS) {
-            throw new Exception("Max players reached");
-        }
-        if (players.contains(player)) {
-            throw new Exception("The player is already in the game");
-        }
-        players.add(player);
-        List<Game> playersGames = player.getGames();
-        playersGames.add(currentGame);
-        player.setGames(playersGames);
+    @Override
+    public Pair<Player, Optional<Integer>> joinGame(int idPlayer, int idGame) throws Exception {
+        Game game = gameRepository.findById(idGame).orElseThrow();
+        Player playerToJoin = playerRepository.findById(idPlayer).orElseThrow();
+
+        game.setPlayerToGame(playerToJoin);
+        gameRepository.save(game);
+        playerRepository.save(playerToJoin);
+
+        Player firstPlayer = game.getPlayers().get(0);
+        Optional<Integer> firstPlayerId = Optional.ofNullable(firstPlayer).map(Player::getIdPlayer);
+
+        return Pair.of(playerToJoin, firstPlayerId);
     }
 
     @Override
