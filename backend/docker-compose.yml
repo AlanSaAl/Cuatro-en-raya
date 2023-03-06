@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  postgres_container:
+    image: postgres:latest
+    container_name: 4R_DB
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=4R_DB
+    volumes:
+      - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
