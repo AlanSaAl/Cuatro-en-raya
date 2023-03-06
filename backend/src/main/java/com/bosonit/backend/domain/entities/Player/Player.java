@@ -13,19 +13,29 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Builder
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_player")
-    private int idPlayer;
+    @Column(name = "id_player",nullable = false)
+    public int idPlayer;
 
     @Column(name = "user_name")
-    private String userName;
+    public String userName;
 
     @Column(name = "user_password")
-    private String userPassword;
+    public String userPassword;
 
-    @ManyToMany
-    private List<Game> games = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Game> games = new ArrayList<Game>();
+
+    @OneToMany(mappedBy = "winner", fetch = FetchType.EAGER)
+    private List<Game> wonGames = new ArrayList<Game>();
+
+    public void addGame(Game game){
+        this.games.add(game);
+    }
+
+    public void addWonGame(Game game){
+        this.wonGames.add(game);
+    }
 }

@@ -9,4 +9,5 @@ import lombok.*;
 @ToString
 public class GameInput {
     int idGame;
+    int idPlayer1;
 }
