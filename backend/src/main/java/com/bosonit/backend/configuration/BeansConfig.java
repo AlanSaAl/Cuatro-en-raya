@@ -10,6 +10,5 @@ public class BeansConfig {
     public Faker getFaker() {
         return new Faker();
     }
-    @Bean
-    public InitialData getInitialData() {return new InitialData();}
+
 }

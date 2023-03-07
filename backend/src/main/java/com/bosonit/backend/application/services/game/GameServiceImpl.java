@@ -8,11 +8,15 @@ import com.bosonit.backend.domain.entities.Game.Shot;
 import com.bosonit.backend.domain.entities.Player.Player;
 import com.bosonit.backend.repository.GameRepository;
 import com.bosonit.backend.repository.PlayerRepository;
+import com.bosonit.backend.repository.ShotRepository;
+import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,14 +25,15 @@ import java.util.Optional;
 @AllArgsConstructor
 public class GameServiceImpl implements GameService {
 
+    private Faker faker;
     private GameRepository gameRepository;
-
     private PlayerRepository playerRepository;
+    private ShotRepository shotRepository;
 
     @Override
-    public GameOutput addGame(int player1Id) {
+    public GameOutput crearJuego(PlayerInput playerInput) {
         //Get the player by id
-        Player playerOne = playerRepository.findById(player1Id).orElseThrow(() -> new IllegalArgumentException("El jugador con id " + player1Id + " no existe"));
+        Player playerOne = playerRepository.findById(playerInput.getIdPlayer()).orElseThrow(() -> new IllegalArgumentException("El jugador con id " + playerInput.getIdPlayer() + " no existe"));
         //Create a new game and add it the player1
         Game newGame = new Game();
         newGame.addPlayer(playerOne);
@@ -47,6 +52,7 @@ public class GameServiceImpl implements GameService {
         return GameOutput;
     }
 
+    @Override
     public Player checkWinner(int idGame) {
         //Buscamos el juego por su id
         Game currentGame = gameRepository.findById(idGame).orElseThrow();
@@ -150,9 +156,55 @@ public class GameServiceImpl implements GameService {
     }
     @Override
     public void deleteGameById(String idGame) {}
-    @Override
-    public GameOutput crearJuego(PlayerInput playerInput) {
-        return null;
+
+    @PostConstruct
+    public void init() {
+        for(int i = 0; i < 10; i++) {
+            Player player = new Player();
+            player.setUserName(faker.name().username());
+            player.setUserPassword(faker.internet().password());
+            Game newGame = new Game();
+            newGame.addPlayer(player);
+            player.addGame(newGame);
+            gameRepository.save(newGame);
+            playerRepository.save(player);
+        }
+
+        Game firstGame = gameRepository.findAll().get(0);
+        Player firstPlayer = playerRepository.findAll().get(0);
+        Player secondPlayer = playerRepository.findAll().get(1);
+
+        /*
+        {0,0,0,0,0,0,0}
+        {0,0,0,0,0,0,0}
+        {0,0,0,0,0,0,0}
+        {0,0,0,0,0,0,0}
+        {0,0,0,0,0,0,0}
+        {A,A,A,A,0,0,0}
+        */
+
+        List<Shot> shotsPlayerOne = Arrays.asList(
+                Shot.builder().col(0).renglon(0).game(firstGame).player(firstPlayer).build(),
+                Shot.builder().col(1).renglon(0).game(firstGame).player(firstPlayer).build(),
+                Shot.builder().col(2).renglon(0).game(firstGame).player(firstPlayer).build(),
+                Shot.builder().col(3).renglon(0).game(firstGame).player(firstPlayer).build()
+        );
+
+        List<Shot> shotsPlayerTwo = Arrays.asList(
+                Shot.builder().col(1).renglon(1).game(firstGame).player(secondPlayer).build(),
+                Shot.builder().col(2).renglon(1).game(firstGame).player(secondPlayer).build(),
+                Shot.builder().col(3).renglon(1).game(firstGame).player(secondPlayer).build(),
+                Shot.builder().col(4).renglon(1).game(firstGame).player(secondPlayer).build()
+        );
+
+        for(int i=0; i<=shotsPlayerOne.size()-1; i++){
+            shotRepository.save(shotsPlayerOne.get(i));
+            shotRepository.save(shotsPlayerTwo.get(i));
+        }
+
+        Player winner = checkWinner(1);
+        log.info(" ================>  El ganador es: " + winner.getUserName());
     }
+
 
 }

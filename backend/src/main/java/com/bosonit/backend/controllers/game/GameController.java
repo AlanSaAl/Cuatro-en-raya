@@ -1,7 +1,6 @@
 package com.bosonit.backend.controllers.game;
 
 import com.bosonit.backend.application.services.game.GameServiceImpl;
-import com.bosonit.backend.controllers.game.dtos.GameInput;
 import com.bosonit.backend.controllers.game.dtos.GameOutput;
 import com.bosonit.backend.controllers.game.dtos.JoinGameInput;
 import com.bosonit.backend.controllers.game.dtos.JoinGameOutput;
@@ -11,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +29,6 @@ public class GameController {
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @Operation(summary = "Se crea un nuevo juego cuando un jugador accede a este endpoint")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public GameOutput addGame(@RequestBody GameInput gameInput) {
-        return gameService.addGame(gameInput.getIdPlayer1());
-    }
-
     @PostMapping("/crear")
     public ResponseEntity<GameOutput> crearJuego(@RequestBody PlayerInput playerInput) {
         return ResponseEntity.ok(gameService.crearJuego(playerInput));

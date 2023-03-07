@@ -8,16 +8,10 @@ import org.springframework.data.util.Pair;
 import java.util.Optional;
 
 public interface GameService {
-
-    GameOutput addGame(int player1Id);
-
-    GameOutput getGame(int idGame);
-
-    Iterable<GameOutput> getAllGames(int pageNumber, int pageSize);
-
-    void deleteGameById(String idGame);
-
     GameOutput crearJuego(PlayerInput playerInput);
-
+    Player checkWinner(int idGame);
+    GameOutput getGame(int idGame);
+    Iterable<GameOutput> getAllGames(int pageNumber, int pageSize);
+    void deleteGameById(String idGame);
     Pair<Player, Optional<Integer>> joinGame(int idGame, int idPlayer) throws Exception;
 }
